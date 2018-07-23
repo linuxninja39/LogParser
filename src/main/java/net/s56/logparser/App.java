@@ -17,6 +17,9 @@ public class App {
         try {
             // parse the command line arguments
             CommandLine line = parser.parse(options, args);
+            LogParser logParser = new LogParser(line);
+            String output = logParser.run();
+            System.out.print(output);
         } catch (ParseException exp) {
             // oops, something went wrong
             System.err.println("Parsing failed.  Reason: " + exp.getMessage());
