@@ -2,6 +2,8 @@ package com.ef;
 
 import org.apache.commons.cli.*;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 
 /**
@@ -27,6 +29,9 @@ public class Parser {
             System.err.println("Parsing failed.  Reason: " + exp.getMessage());
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("java -jar LogParser.jar [options]", options);
+        } catch (IOException | URISyntaxException e) {
+            System.err.println("Failed to open log file.  Reason: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

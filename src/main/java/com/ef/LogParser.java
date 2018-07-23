@@ -1,11 +1,29 @@
 package com.ef;
 
-import org.apache.commons.cli.CommandLine;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.*;
 
-public class LogParser {
+class LogParser {
+    private static String FILE_NAME = "access.log";
 
-    public String run(CommandLineArgs args) {
-        return "cool n stuffz";
+    String run(CommandLineArgs args) throws IOException, URISyntaxException {
+        Path file = findFile();
+        System.out.println(file);
+        Files.lines(file).forEach(this::handleLine);
+        return "handleLine n stuffz";
     }
 
+    private Path findFile() throws URISyntaxException {
+        Path sameDir = Paths.get(LogParser.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+        Path logFile = Paths.get(sameDir.toString(), FILE_NAME);
+        if (sameDir.toString().toLowerCase().endsWith(".jar")) {
+            logFile = Paths.get(sameDir.toString(), "../", FILE_NAME);
+        }
+        return logFile;
+    }
+
+    private void handleLine(String line) {
+        String[] parts = line.split("\\|");
+    }
 }
