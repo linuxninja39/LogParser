@@ -1,11 +1,13 @@
-package net.s56.logparser;
+package com.ef;
 
 import org.apache.commons.cli.*;
+
+import java.text.SimpleDateFormat;
 
 /**
  * Hello world!
  */
-public class App {
+public class Parser {
     private static String OPT_START_DATE = "startDate";
     private static String OPT_DURATION = "duration";
     private static String OPT_THRESHOLD = "threshold";
@@ -28,10 +30,10 @@ public class App {
         }
     }
 
-    private static void validateOptions(CommandLine line) {
-        if (line.hasOption(OPT_START_DATE)) {
-
-        }
+    private static CommandLineArgs parseOptions(CommandLine line) throws java.text.ParseException {
+        CommandLineArgs clArgs = new CommandLineArgs();
+        clArgs.setStartDate(new SimpleDateFormat("yyyy-MM-dd.HH:mm:ss").parse(line.getOptionValue(OPT_START_DATE)));
+        return clArgs;
     }
 
     private static Options buildOptions() {
@@ -39,6 +41,7 @@ public class App {
         options.addOption(
                 Option.builder()
                         .argName(OPT_START_DATE)
+                        .required()
                         .desc("start date for search")
                         .longOpt(OPT_START_DATE)
                         .hasArg()
@@ -48,6 +51,7 @@ public class App {
         options.addOption(
                 Option.builder()
                         .argName(OPT_DURATION)
+                        .required()
                         .desc("duration of search")
                         .longOpt(OPT_DURATION)
                         .hasArg()
@@ -58,6 +62,7 @@ public class App {
         options.addOption(
                 Option.builder()
                         .argName(OPT_THRESHOLD)
+                        .required()
                         .desc("threshold for search")
                         .longOpt(OPT_THRESHOLD)
                         .hasArg()

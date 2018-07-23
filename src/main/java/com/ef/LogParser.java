@@ -1,4 +1,4 @@
-package net.s56.logparser;
+package com.ef;
 
 import org.apache.commons.cli.CommandLine;
 
