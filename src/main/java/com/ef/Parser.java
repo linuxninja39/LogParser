@@ -1,10 +1,13 @@
 package com.ef;
 
+import com.ef.entities.IpAddressEntity;
 import org.apache.commons.cli.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Hello world!
@@ -22,8 +25,17 @@ public class Parser {
             // parse the command line arguments
             CommandLine line = parser.parse(options, args);
             LogParser logParser = new LogParser();
-            String output = logParser.run(parseOptions(line));
-            System.out.print(output);
+            CommandLineArgs args1 = parseOptions(line);
+            List<?> results = logParser.run(args1);
+            for (Object result : results) {
+                Object[] row = (Object[]) result;
+                IpAddressEntity ip = (IpAddressEntity) row[0];
+                int count = (int) (long) row[1];
+                System.out.println(ip.getValue() + ", " + count);
+            }
+
+            System.exit(0);
+
         } catch (ParseException | java.text.ParseException exp) {
             // oops, something went wrong
             System.err.println("Parsing failed.  Reason: " + exp.getMessage());
@@ -33,12 +45,15 @@ public class Parser {
             System.err.println("Failed to open log file.  Reason: " + e.getMessage());
             e.printStackTrace();
         }
+        System.exit(0);
     }
 
     private static CommandLineArgs parseOptions(CommandLine line) throws java.text.ParseException, ParseException {
         CommandLineArgs clArgs = new CommandLineArgs();
-        clArgs.setStartDate(new SimpleDateFormat("yyyy-MM-dd.HH:mm:ss").parse(line.getOptionValue(OPT_START_DATE)));
-        clArgs.setThreshold(Integer.parseInt(line.getOptionValue(OPT_THRESHOLD)));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd.HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        clArgs.setStartDate(dateFormat.parse(line.getOptionValue(OPT_START_DATE)));
+        clArgs.setThreshold(Long.parseLong(line.getOptionValue(OPT_THRESHOLD)));
         if (!line.getOptionValue(OPT_DURATION).matches("^hourly|daily$")) {
             throw new ParseException("threshold MUST be either hourly or daily");
         }

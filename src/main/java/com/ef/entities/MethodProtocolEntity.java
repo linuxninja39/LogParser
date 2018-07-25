@@ -7,9 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "MethodProtocol")
 public class MethodProtocolEntity extends BaseTypeEntity {
     @OneToMany(mappedBy = "methodProtocol")
     private List<LogEntity> logs = new ArrayList<>();
 
+    public List<LogEntity> getLogs() {
+        return logs;
+    }
+
+    public void setLogs(List<LogEntity> logs) {
+        this.logs = logs;
+    }
 }

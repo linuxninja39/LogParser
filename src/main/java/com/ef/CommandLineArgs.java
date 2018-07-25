@@ -5,7 +5,7 @@ import java.util.Date;
 public class CommandLineArgs {
     private String duration;
     private Date startDate;
-    private Integer threshold;
+    private Long threshold;
 
     public Date getStartDate() {
         return startDate;
@@ -23,11 +23,11 @@ public class CommandLineArgs {
         this.duration = duration;
     }
 
-    public Integer getThreshold() {
+    public Long getThreshold() {
         return threshold;
     }
 
-    public void setThreshold(Integer threshold) {
+    public void setThreshold(Long threshold) {
         this.threshold = threshold;
     }
 }
